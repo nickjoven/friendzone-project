@@ -1,23 +1,32 @@
+import { useState, useEffect } from 'react'
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+// https://pokeapi.co/api/v2/pokemon/257
+
+const App = () => {
+  const [friends, setFriends] = useState([])
+  useEffect(() => {
+    const fetchFriends = async () => {
+      let req = await fetch('http://localhost:3005/friends')
+      let res = await req.json()
+      setFriends(res)
+      console.log(res)
+    }
+    fetchFriends()
+  },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ul>
+        {
+          friends.map((element, index) => {
+            return (
+              <h3 key={index}>{element.name}</h3>
+              )
+            })
+        }
+        </ul>
     </div>
   );
 }
